@@ -1,2 +1,2 @@
 # nataliecarstens.github.io
-portfolio site
+website for my artwork
