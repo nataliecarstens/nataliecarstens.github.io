@@ -2,6 +2,10 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var coffee = require('gulp-coffee');
+var uglify = require('gulp-uglify');
+    concat = require('gulp-concat');
+
+var connect = require('gulp-connect');
 
 gulp.task('copy', function () {
   gulp.src('index.html')
@@ -24,4 +28,26 @@ gulp.task('coffee', function () {
   .pipe(coffee({bare:true})
     .on('error', gutil.log))
   .pipe(gulp.dest('scripts'))
+});
+
+gulp.task('js', function () {
+  gulp.src('scripts/*.js')
+  .pipe(uglify())
+  .pipe(concat('script.js'))
+  .pipe(gulp.dest('assets'))
+});
+
+gulp.task('default', ['coffee', 'js']);
+
+gulp.task('watch', function () {
+  gulp.watch('scripts/hello.coffee', ['coffee']);
+  gulp.watch('scripts/*.js', ['js']);
+  gulp.watch('styles.main.scss', ['sass']);
+});
+
+gulp.task('connect', function () {
+  connect.server({
+    root:'.',
+    livereload: true
+  })
 });
